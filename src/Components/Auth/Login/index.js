@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { View, Button } from "react-native";
+import { View, Button, Text, TouchableOpacity } from "react-native";
 // import Config from 'react-native-config';
-import firebase from "firebase";
 import InputForm from "../TextFieldInput";
+import Main from "../../Main";
+import firebase from "../../../firebaseClient";
 
 class Login extends Component {
   constructor() {
@@ -11,14 +12,8 @@ class Login extends Component {
     this.login = this.login.bind(this);
   }
   componentDidMount() {
-    firebase.initializeApp({
-      apiKey: "AIzaSyB9So7cOeKprxApWec0sRrrULSUsH1HA3E",
-      authDomain: "instagram-b3397.firebaseapp.com",
-      databaseURL: "https://instagram-b3397.firebaseio.com",
-      projectId: "instagram-b3397",
-      storageBucket: "instagram-b3397.appspot.com",
-      messagingSenderId: "387354036691"
-    });
+    console.log(firebase.name);
+    console.log(firebase.database());
   }
 
   login() {
@@ -29,6 +24,7 @@ class Login extends Component {
       .signInWithEmailAndPassword(email, password)
       .then(result => {
         console.error(result);
+        return <Main user={email} />;
       })
       .catch(error => {
         console.error(error);
@@ -53,6 +49,11 @@ class Login extends Component {
           onChangeText={password => this.setState({ password })}
         />
         <Button title="Log in" onPress={this.login} />
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("SignUp")}
+        >
+          <Text>not sign up?</Text>
+        </TouchableOpacity>
       </View>
     );
   }

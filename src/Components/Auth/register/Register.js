@@ -4,6 +4,8 @@ import firebase from "firebase";
 import TextFieldInput from "../TextFieldInput";
 import styles from "./styles";
 
+import Main from "../../Main";
+
 class SignInForm extends Component {
   constructor() {
     super();
@@ -25,7 +27,7 @@ class SignInForm extends Component {
       .createUserAndRetrieveDataWithEmailAndPassword(email, password)
       .then(() => {
         this.setState({ error: "", loading: false });
-        this.props.navigator.navigate("Main");
+        return <Main user={email} />;
       })
       .catch(error => {
         const errorCode = error.code;
