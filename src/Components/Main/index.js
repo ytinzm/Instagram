@@ -1,24 +1,31 @@
-import React, { Component } from 'react';
-import { TabNavigator } from 'react-navigation';
+import React, { Component } from "react";
+import { TabNavigator } from "react-navigation";
 
-import Main from './Main';
-import Detail from './Detail';
-import New from './New';
+import Main from "./Main";
+import Detail from "./Detail";
+import New from "./New";
 
-const MainRootStack = TabNavigator(
+MainRootStack = TabNavigator(
   {
     Main: { screen: Main },
     Detail: { screen: Detail },
-    New: { screen: New },
+    New: { screen: New }
   },
   {
-    tabBarPosition: 'bottom',
-  },
+    initialRouteName: "Main",
+    tabBarPosition: "bottom",
+    initialRouteParams: { user: this.props }
+  }
 );
 
 class MainNavigator extends Component {
   render() {
-    return <MainRootStack />;
+    return (
+      <MainRootStack
+        navigation={this.props.navigation}
+        user={this.props.user}
+      />
+    );
   }
 }
 

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, Button, Text, TouchableOpacity } from "react-native";
+import firebase from "firebase";
 // import Config from 'react-native-config';
 import InputForm from "../TextFieldInput";
 import Main from "../../Main";
-import firebase from "../../../firebaseClient";
 
 class Login extends Component {
   constructor() {

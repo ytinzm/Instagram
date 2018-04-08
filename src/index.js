@@ -1,34 +1,54 @@
 import React, { Component } from "react";
-import { AsyncStorage } from "react-native";
+import { TabNavigator, StackNavigator } from "react-navigation";
+
+import InitialRoading from "./loading";
 
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/register";
-import MainScreen from "./Components/Main";
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = { loading: true, user: "" };
-    this._loadInitialState = this._loadInitialState.bind();
+import Main from "./Components/Main/Main";
+import Detail from "./Components/Main/Detail";
+import New from "./Components/Main/New";
+
+AuthRootStack = StackNavigator(
+  {
+    Login: { screen: Login },
+    Register: { screen: Register }
+  },
+  {
+    initialRouteName: "Login",
+    initialRouteParams: { PrimaryNavigation: this.props.navigation }
   }
-  componentDidMount() {
-    this._loadInitialState().done();
+);
+
+MainRootStack = TabNavigator(
+  {
+    Main: { screen: Main },
+    Detail: { screen: Detail },
+    New: { screen: New }
+  },
+  {
+    initialRouteName: "Main",
+    tabBarPosition: "bottom",
+    initialRouteParams: { PrimaryNavigation: this.props.navigation }
   }
-  async _loadInitialState() {
-    try {
-      await AsyncStorage.setItem("foo", "bar");
-      await AsyncStorage.getItem("foo").then(console.log); // null
-      await AsyncStorage.getAllKeys().then(console.log); // []
-    } catch (error) {
-      console.log("AsyncStorage error:" + error);
-    }
+);
+
+PrimaryRootStack = StackNavigator(
+  {
+    Loading: InitialRoading,
+    Auth: AuthRootStack,
+    Main: MainRootStack
+  },
+  {
+    initialRouteName: "Loading"
   }
+);
+
+class MainNavigator extends Component {
   render() {
-    if (this.state.loading) {
-      return null;
-    }
-    return <Login />;
+    return <PrimaryRootStack PrimaryNavigation={this.props.navigation} />;
   }
 }
 
-export default App;
+export default MainNavigator;
